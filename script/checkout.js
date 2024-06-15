@@ -100,6 +100,7 @@ document.querySelectorAll('.js-delete-link')
     removeProduct(productId);
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     console.log(container);
-    container.remove()
+    container.remove();
+    console.log(cart)
   })
 })
