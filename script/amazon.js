@@ -1,4 +1,4 @@
-const products = [{
+/* const products = [{
   image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
   name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
   rating: {
@@ -38,7 +38,39 @@ const products = [{
     count: 982,
   },
   priceCent: 3499, //cents
-}];
+}, {
+  image: 'images/products/6-piece-white-dinner-plate-set.jpg',
+  name: '6 Piece White Dinner Plate Set',
+  rating: {
+    stars: 4.0,
+    count: 36,
+  },
+  priceCent: 2067, //cents
+}, {
+  image: 'images/products/women-chiffon-beachwear-coverup-black.jpg',
+  name: "Women's Chiffon Beachwear Cover Up - Black",
+  rating: {
+    stars: 4.5,
+    count: 98,
+  },
+  priceCent: 2070, //cents
+}, {
+  image: 'images/products/blackout-curtain-set-beige.webp',
+  name: 'Blackout Curtains Set 4-Pack - Beige',
+  rating: {
+    stars: 4.5,
+    count: 282,
+  },
+  priceCent: 4599, //cents
+}, {
+  image: 'images/products/countertop-blender-64-oz.jpg',
+  name: 'Countertop Blender - 64oz, 1400 Watts',
+  rating: {
+    stars: 4.0,
+    count: 6,
+  },
+  priceCent: 10747, //cents
+}]; */
 
 let productsHTML = '';
 
@@ -63,7 +95,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-price">
-          $${(product.priceCent / 100).toFixed(2)}
+          $${(product.priceCents / 100).toFixed(2)}
         </div>
 
         <div class="product-quantity-container">
