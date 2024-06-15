@@ -1,78 +1,4 @@
-/* const products = [{
-  image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
-  name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
-  rating: {
-    stars: 4.5,
-    count: 87,
-  },
-  priceCent: 1090, //cents
-}, {
-  image: 'images/products/intermediate-composite-basketball.jpg',
-  name: 'Intermediate Size Basketball',
-  rating: {
-    stars: 4.0,
-    count: 127,
-  },
-  priceCent: 2095, //cents
-}, {
-  image: 'images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-  name: 'Adults Plain Cotton T-Shirt - 2 Pack',
-  rating: {
-    stars: 4.5,
-    count: 46,
-  },
-  priceCent: 799, //cents
-}, {
-  image: 'images/products/black-2-slot-toaster.jpg',
-  name: '2 Slot Toaster - Black',
-  rating: {
-    stars: 5,
-    count: 2197,
-  },
-  priceCent: 1899, //cents
-}, {
-  image: 'images/products/6-piece-non-stick-baking-set.webp',
-  name: '6-Piece Nonstick, Carbon Steel Oven Bakeware Baking Set',
-  rating: {
-    stars: 4.5,
-    count: 982,
-  },
-  priceCent: 3499, //cents
-}, {
-  image: 'images/products/6-piece-white-dinner-plate-set.jpg',
-  name: '6 Piece White Dinner Plate Set',
-  rating: {
-    stars: 4.0,
-    count: 36,
-  },
-  priceCent: 2067, //cents
-}, {
-  image: 'images/products/women-chiffon-beachwear-coverup-black.jpg',
-  name: "Women's Chiffon Beachwear Cover Up - Black",
-  rating: {
-    stars: 4.5,
-    count: 98,
-  },
-  priceCent: 2070, //cents
-}, {
-  image: 'images/products/blackout-curtain-set-beige.webp',
-  name: 'Blackout Curtains Set 4-Pack - Beige',
-  rating: {
-    stars: 4.5,
-    count: 282,
-  },
-  priceCent: 4599, //cents
-}, {
-  image: 'images/products/countertop-blender-64-oz.jpg',
-  name: 'Countertop Blender - 64oz, 1400 Watts',
-  rating: {
-    stars: 4.0,
-    count: 6,
-  },
-  priceCent: 10747, //cents
-}]; */
-
-import { cart } from '../data/cart.js';
+import { cart, addToCart } from '../data/cart.js';
 import { products } from '../data/products.js';
 
 let productsHTML = '';
@@ -134,34 +60,21 @@ products.forEach((product) => {
 
 document.getElementById('productGrid').innerHTML = productsHTML;
 
+function updateCart() {
+  let cartQuantity = 0;
+
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;        
+  });
+  document.querySelector('.js-cart-quantity')
+    .innerHTML = cartQuantity; 
+}
+
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId;
-
-      let matchingItem;
-
-      cart.forEach((item) => {
-        if (productId === item.productId) {
-          matchingItem = item;
-        }
-      })
-
-      if (matchingItem) {
-        matchingItem.quantity += 1;
-      } else { 
-        cart.push({
-        productId: productId,
-        quantity: 1,
-      })};
-
-      let cartQuantity = 0;
-
-      cart.forEach((item) => {
-        cartQuantity += item.quantity;        
-      });
-
-      document.querySelector('.js-cart-quantity')
-        .innerHTML = cartQuantity;       
+      addToCart(productId); 
+      updateCart();  
     });   
   }); 
