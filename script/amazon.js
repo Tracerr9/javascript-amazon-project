@@ -1,8 +1,9 @@
-import { cart, addToCart } from '../data/cart.js';
+import { cart, addToCart, calculateCartQuantity } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utility/money.js';
 
 let productsHTML = '';
+updateCart();
 
 products.forEach((product) => {
   productsHTML += `
@@ -45,7 +46,7 @@ products.forEach((product) => {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart">
+        <div class="added-to-cart js-added-to-cart-${product.id}">
           <img src="images/icons/checkmark.png">
           Added
         </div>
@@ -56,19 +57,23 @@ products.forEach((product) => {
         </button>
       </div>
   `
-  console.log(productsHTML)
 });
 
 document.getElementById('productGrid').innerHTML = productsHTML;
 
 function updateCart() {
-  let cartQuantity = 0;
-
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;        
-  });
+  let cartQuantity = calculateCartQuantity();
   document.querySelector('.js-cart-quantity')
     .innerHTML = cartQuantity; 
+};
+
+function addedToCart(productId) {
+  const addedToCartMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+  addedToCartMessage.style.opacity = '1';
+
+  setTimeout(() => {
+    addedToCartMessage.style.opacity = '0';
+  }, 2000);
 }
 
 document.querySelectorAll('.js-add-to-cart')
@@ -77,5 +82,7 @@ document.querySelectorAll('.js-add-to-cart')
       const productId = button.dataset.productId;
       addToCart(productId); 
       updateCart();  
+      addedToCart(productId);
     });   
   }); 
+
