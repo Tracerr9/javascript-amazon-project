@@ -1,8 +1,9 @@
 import { cart, removeProduct, calculateCartQuantity, updateCartQuantity, updateDeliveryOption } from "../../data/cart.js";
-import { products, getProduct } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utility/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; 
-import { deliveryOptions } from "../../data/deliveryOption.js";
+import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
 
@@ -16,13 +17,8 @@ export function renderOrderSummary() {
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
-    let deliveryOption;
-
-    deliveryOptions.forEach((option) => {
-      if (option.id === deliveryOptionId) {
-        deliveryOption = option;
-      };
-    });
+    let deliveryOption = getDeliveryOption(deliveryOptionId);
+    
     let dateString = calcDeliveryDate(deliveryOption);
     cartSummaryHTML += `
     <div class="cart-item-container 
@@ -78,7 +74,8 @@ export function renderOrderSummary() {
       removeProduct(productId);
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
       container.remove();
-      updateQuantity()
+      updateQuantity();
+      renderPaymentSummary()
     })
   })
 
@@ -110,7 +107,7 @@ export function renderOrderSummary() {
       updateQuantity();
       toggleIsEditing(productId, false);
       getElementQuantity(productId);
-
+      renderPaymentSummary()
     })
   })
 
@@ -167,12 +164,10 @@ export function renderOrderSummary() {
     })
 
     
-  function calcDeliveryDate(deliveryOption) {
+  function calcDeliveryDate(deliveryId) {
     const today = dayjs();
       const deliveryDate = today.add(
-        deliveryOption.deliveryDays, 
-        'days'
-      );
+        deliveryId.deliveryDays, 'days');
       const dateString = deliveryDate.format('dddd, D MMMM');
 
       return dateString;
@@ -184,7 +179,8 @@ export function renderOrderSummary() {
           const productId = element.dataset.productId;
           const deliveryOptionId = element.dataset.deliveryOptionId;
           updateDeliveryOption(productId, deliveryOptionId);
-          renderOrderSummary()
+          renderOrderSummary();
+          renderPaymentSummary()
       });
   });
 }
