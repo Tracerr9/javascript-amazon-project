@@ -75,7 +75,6 @@ export function renderOrderSummary() {
       const productId = link.dataset.productId;
       removeProduct(productId);
       renderOrderSummary();
-      updateQuantity();
       renderPaymentSummary();
       renderCheckoutHeader();
     })
