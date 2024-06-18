@@ -4,11 +4,12 @@ import { formatCurrency } from "../utility/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; 
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary() {
 
   let cartSummaryHTML = '';
-  updateQuantity();
+  renderCheckoutHeader()
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
@@ -18,7 +19,7 @@ export function renderOrderSummary() {
     const deliveryOptionId = cartItem.deliveryOptionId;
 
     let deliveryOption = getDeliveryOption(deliveryOptionId);
-    
+
     let dateString = calcDeliveryDate(deliveryOption);
     cartSummaryHTML += `
     <div class="cart-item-container 
@@ -67,23 +68,18 @@ export function renderOrderSummary() {
   });
 
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+
   document.querySelectorAll('.js-delete-link')
     .forEach((link) => {
     link.addEventListener('click',() => {
       const productId = link.dataset.productId;
       removeProduct(productId);
-      const container = document.querySelector(`.js-cart-item-container-${productId}`);
-      container.remove();
+      renderOrderSummary();
       updateQuantity();
-      renderPaymentSummary()
+      renderPaymentSummary();
+      renderCheckoutHeader();
     })
-  })
-
-  function updateQuantity() {
-    let cartQuantity = calculateCartQuantity();
-    document.querySelector('.js-checkout-quantity')
-      .innerHTML = `${cartQuantity} item(s)`; 
-  }
+  });
 
   document.querySelectorAll(`.js-update-quantity-link`)
     .forEach((link) => {
@@ -104,10 +100,10 @@ export function renderOrderSummary() {
       const quantity = parseInt(quantityInput.value, 10);
       quantityLabel.innerHTML = quantity;    
       updateCartQuantity(productId, quantity);
-      updateQuantity();
+      renderCheckoutHeader();
       toggleIsEditing(productId, false);
       getElementQuantity(productId);
-      renderPaymentSummary()
+      renderPaymentSummary();
     })
   })
 
@@ -180,7 +176,7 @@ export function renderOrderSummary() {
           const deliveryOptionId = element.dataset.deliveryOptionId;
           updateDeliveryOption(productId, deliveryOptionId);
           renderOrderSummary();
-          renderPaymentSummary()
+          renderPaymentSummary();
       });
   });
 }
