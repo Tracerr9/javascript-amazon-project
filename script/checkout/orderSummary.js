@@ -1,5 +1,5 @@
 import { cart, removeProduct, calculateCartQuantity, updateCartQuantity, updateDeliveryOption } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utility/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js"; 
 import { deliveryOptions } from "../../data/deliveryOption.js";
@@ -12,13 +12,7 @@ export function renderOrderSummary() {
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
 
-    let matchingProduct;
-
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;  
-      }
-    });
+    let matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
@@ -187,12 +181,12 @@ export function renderOrderSummary() {
   document.querySelectorAll('.js-delivery-option')
     .forEach((element) => {
         element.addEventListener('click', () => {
-        const productId = element.dataset.productId;
-        const deliveryOptionId = element.dataset.deliveryOptionId;
-        updateDeliveryOption(productId, deliveryOptionId);
-        renderOrderSummary()
-    });
-  })
+          const productId = element.dataset.productId;
+          const deliveryOptionId = element.dataset.deliveryOptionId;
+          updateDeliveryOption(productId, deliveryOptionId);
+          renderOrderSummary()
+      });
+  });
 }
 
 renderOrderSummary()
