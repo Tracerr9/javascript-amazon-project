@@ -6,6 +6,8 @@ import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js
 import { renderPaymentSummary } from "./paymentSummary.js";
 import { renderCheckoutHeader } from "./checkoutHeader.js";
 
+console.log(cart);
+
 export function renderOrderSummary() {
 
   let cartSummaryHTML = '';
@@ -15,6 +17,7 @@ export function renderOrderSummary() {
     const productId = cartItem.productId;
 
     let matchingProduct = getProduct(productId);
+    console.log(matchingProduct)
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
@@ -179,5 +182,3 @@ export function renderOrderSummary() {
       });
   });
 }
-
-renderOrderSummary()
