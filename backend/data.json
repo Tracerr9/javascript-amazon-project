@@ -1,0 +1,27 @@
+[
+	{
+		"bulan": "Januari",
+		"penjualan": 20000000,
+		"retur":0
+	},
+	{
+		"bulan": "Februari",
+		"penjualan": 22000000,
+		"retur":2000
+	},
+	{
+		"bulan": "Maret",
+		"penjualan": 19000000,
+		"retur":9000
+	},
+	{
+		"bulan": "April",
+		"penjualan": 21000000,
+		"retur":2000
+	},
+	{
+		"bulan": "Mei",
+		"penjualan": 29000000,
+		"retur":8000
+	}
+]
